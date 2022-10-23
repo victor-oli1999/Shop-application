@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <title>Loja do Victor</title>
+        <style>
+            body  {
+                background: #242424;
+                font-family: "Inter";
+                margin: 0;
+            }
+            .navbar {
+                margin: auto;
+                width: 80%;
+            }
+            .navbar {
+                background: #242424;
+                color: #fff;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .navbar .esq ul {
+                display: flex;
+                align-items: center;
+                padding: 0;
+            }
+            .navbar ul li {
+                border-right: solid 1px #fff;
+                list-style: none;
+                padding: 0 10px;
+            }
+            .home {
+                background-color: #DDFFDD;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 60px;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app" v-cloak>
+            <div class="navbar">
+                <div class="esq">
+                    <ul>
+                        <li>Home</li>
+                        <li>Produtos</li>
+                        <li>Past Orders</li>
+                    </ul>
+                </div>
+                <div class="dir">
+                    <ul>
+                        <li>Carrinho {{ cartCount }} </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="home">
+                <h1>LOJA </br>DO<br> VICTOR</h1>
+            </div>
+        </div>
+
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+        <script>
+            let app = Vue.createApp({
+                data: function() {
+                    return {
+                        greeting: "Hello Vue 3!",
+                        isVisible: false,
+                        isVisible2: true
+                    }
+                },
+                methods: {
+                    toggleBox() {
+                        this.isVisible = !this.isVisible
+                    },
+                    greet(greeting) {
+                        console.log(greeting)
+                    }
+                }
+            })
+            app.component('login-form', {
+                template: `
+                    <form @submit.prevent="handleSubmit">
+                        <h1>{{ title }}</h1>
+                        
+                        <custom-input
+                            v-for="(input, i) in inputs"
+                            :key="i" 
+                            v-model="input.value" 
+                            :label="input.label" 
+                            :type="input.type"
+                        />
+
+                        <button>Log in</button>
+                    </form>
+                `,
+                components: ['custom-input'],
+                data() {
+                    return {
+                        title: 'Login Form',
+                        inputs: [
+                            {
+                                label: 'email',
+                                value: '',
+                                type: 'email'
+                            },
+                            {
+                                label: 'password',
+                                value: '',
+                                type: 'password'
+                            }
+                        ]
+
+                    }
+                },
+                methods: {
+                    handleSubmit() {
+                        console.log(this.inputs[0].value, this.inputs[1].value)
+                    }
+                }
+            })
+            app.component('custom-input', {
+                template: `
+                <label>
+                    {{ label }}
+                    <input :type="type" v-model="inputValue" />
+                </label>
+                `,
+                props: ['label', 'type', 'modelValue'],
+                computed: {
+                    inputValue: {
+                        get() {
+                            return this.modelValue
+                        },
+                        set(value) {
+                            this.$emit('update:modelValue', value)
+                        }
+                    }
+                }
+            })
+            
+            app.mount("#app")
+        </script>
+    </body>
+</html>
